@@ -153,7 +153,7 @@ def get_one_user(x):
         i = User.query.get(x)
         db.session.delete(i)
         db.session.commit()
-        return jsonify(i)
+        return "", 204
     elif request.method == "PUT":
         data_user = request.json
         i = User.query.get(x)
@@ -201,7 +201,7 @@ def get_one_order(x):
         i = Order.query.get(x)
         db.session.delete(i)
         db.session.commit()
-        return json.dumps(i)
+        return "", 204
     elif request.method == "PUT":
         data_order = request.json
         i = Order.query.get(x)
@@ -244,7 +244,7 @@ def get_one_offer(x):
         i = Offer.query.get(x)
         db.session.delete(i)
         db.session.commit()
-        return jsonify(i)
+        return "", 204
     elif request.method == "PUT":
         data_offer = request.json
         i = Offer.query.get(x)
