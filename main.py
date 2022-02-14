@@ -142,9 +142,9 @@ def get_all_users():
         )
         db.session.add(raw_user)
         db.session.commit()
-        return jsonify(raw_user)
+        return jsonify(raw_user.users.dict())
 
-@app.route("/users/<int:x>", methods=['GET', 'DELETE', 'POST'])
+@app.route("/users/<int:x>", methods=['GET', 'DELETE', 'PUT'])
 def get_one_user(x):
     """Получения одного пользователя, обновление пользователя, удаление пользователя"""
     if request.method == "GET":
@@ -157,11 +157,11 @@ def get_one_user(x):
     elif request.method == "PUT":
         data_user = request.json
         i = User.query.get(x)
-        i.first_name = data_user["first_name"],
-        i.last_name = data_user ["last_name"],
-        i.age = data_user ["age"],
-        i.email = data_user ["email"],
-        i.role = data_user ["role"],
+        i.first_name = data_user["first_name"]
+        i.last_name = data_user ["last_name"]
+        i.age = data_user ["age"]
+        i.email = data_user ["email"]
+        i.role = data_user ["role"]
         i.phone = data_user ["phone"]
         db.session.add(i)
         db.session.commit()
@@ -175,7 +175,7 @@ def get_all_orders():
         orders_res = []
         for i in Order.query.all():
             orders_res.append(i.order_dict())
-        return jsonify(orders_res)
+        return jsonify(orders_res.users_dict())
     elif request.method == "POST":
         data_order = request.json
         raw_order = Order(
@@ -190,9 +190,9 @@ def get_all_orders():
         )
         db.session.add(raw_order)
         db.session.commit()
-        return jsonify(raw_order)
+        return jsonify(raw_order.orders.dict())
 
-@app.route("/orders/<int:x>", methods=['GET', 'POST', 'DELETE'])
+@app.route("/orders/<int:x>", methods=['GET', 'DELETE', 'PUT'])
 def get_one_order(x):
     """Получения одного заказчика, обновление заказчика, удаление заказчика"""
     if request.method == "GET":
@@ -205,13 +205,13 @@ def get_one_order(x):
     elif request.method == "PUT":
         data_order = request.json
         i = Order.query.get(x)
-        i.name=data_order["name"],
-        i.description = data_order["description"],
-        i.start_date = data_order["start_date"],
-        i.end_date = data_order["end_date"],
-        i.address = data_order["address"],
-        i.price = data_order["price"],
-        i.customer_id = data_order["customer_id"],
+        i.name=data_order["name"]
+        i.description = data_order["description"]
+        i.start_date = data_order["start_date"]
+        i.end_date = data_order["end_date"]
+        i.address = data_order["address"]
+        i.price = data_order["price"]
+        i.customer_id = data_order["customer_id"]
         i.executor_id = data_order["executor_id"]
         db.session.add(i)
         db.session.commit()
@@ -233,9 +233,9 @@ def get_all_offers():
         )
         db.session.add(raw_offer)
         db.session.commit()
-        return jsonify(raw_order)
+        return jsonify(raw_order.offers_dict())
 
-@app.route("/offers/<int:x>", methods=['GET', 'POST', 'DELETE'])
+@app.route("/offers/<int:x>", methods=['GET', 'DELETE', 'PUT'])
 def get_one_offer(x):
     """Получения одного предложения, обновление предложения, удаление предложения"""
     if request.method == "GET":
@@ -248,7 +248,7 @@ def get_one_offer(x):
     elif request.method == "PUT":
         data_offer = request.json
         i = Offer.query.get(x)
-        i.order_id = data_offer["order_id"],
+        i.order_id = data_offer["order_id"]
         i.executor_id = data_offer["executor_id"]
         i.db.session.add(i)
         i.db.session.commit()
