@@ -51,7 +51,7 @@ class Order(db.Model):
     customer_id = db.Column(db.Integer, db.ForeignKey("user.id"))
     executor_id = db.Column(db.Integer, db.ForeignKey("user.id"))
 
-    def order_dict(self):
+    def orders_dict(self):
         return {
             "id": self.id,
             "name": self.name,
@@ -71,7 +71,7 @@ class Offer(db.Model):
     order_id = db.Column(db.Integer, db.ForeignKey("order.id"))
     executor_id = db.Column(db.Integer, db.ForeignKey("user.id"))
 
-    def offer_dict(self):
+    def offers_dict(self):
         return {
             "id": self.id,
             "order_id": self.order_id,
@@ -174,8 +174,8 @@ def get_all_orders():
     if request.method == "GET":
         orders_res = []
         for i in Order.query.all():
-            orders_res.append(i.order_dict())
-        return jsonify(orders_res.users_dict())
+            orders_res.append(i.orders_dict())
+        return jsonify(orders_res)
     elif request.method == "POST":
         data_order = request.json
         raw_order = Order(
@@ -190,13 +190,13 @@ def get_all_orders():
         )
         db.session.add(raw_order)
         db.session.commit()
-        return jsonify(raw_order.orders.dict())
+        return jsonify(raw_order.orders_dict())
 
 @app.route("/orders/<int:x>", methods=['GET', 'DELETE', 'PUT'])
 def get_one_order(x):
     """Получения одного заказчика, обновление заказчика, удаление заказчика"""
     if request.method == "GET":
-        return jsonify(Order.query.get(x).order_dict())
+        return jsonify(Order.query.get(x).orders_dict())
     elif request.method == "DELETE":
         i = Order.query.get(x)
         db.session.delete(i)
@@ -223,7 +223,7 @@ def get_all_offers():
     if request.method == "GET":
         offers_res = []
         for i in Offer.query.all():
-            offers_res.append(i.offer_dict())
+            offers_res.append(i.offers_dict())
         return jsonify(offers_res)
     elif request.method == "POST":
         data_offer = request.json
@@ -239,7 +239,7 @@ def get_all_offers():
 def get_one_offer(x):
     """Получения одного предложения, обновление предложения, удаление предложения"""
     if request.method == "GET":
-        return jsonify(Offer.query.get(x).offer_dict())
+        return jsonify(Offer.query.get(x).offers_dict())
     elif request.method == "DELETE":
         i = Offer.query.get(x)
         db.session.delete(i)
