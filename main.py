@@ -142,7 +142,7 @@ def get_all_users():
         )
         db.session.add(raw_user)
         db.session.commit()
-        return jsonify(raw_user.users.dict())
+        return jsonify(raw_user.users_dict())
 
 @app.route("/users/<int:x>", methods=['GET', 'DELETE', 'PUT'])
 def get_one_user(x):
@@ -165,7 +165,7 @@ def get_one_user(x):
         i.phone = data_user ["phone"]
         db.session.add(i)
         db.session.commit()
-        return jsonify(i)
+        return jsonify(i.users_dict())
 
 
 @app.route("/orders", methods=['GET', 'POST'])
@@ -215,7 +215,7 @@ def get_one_order(x):
         i.executor_id = data_order["executor_id"]
         db.session.add(i)
         db.session.commit()
-        return jsonify(i)
+        return jsonify(i.orders_dict())
 
 @app.route("/offers", methods=['GET', 'POST'])
 def get_all_offers():
@@ -233,7 +233,7 @@ def get_all_offers():
         )
         db.session.add(raw_offer)
         db.session.commit()
-        return jsonify(raw_order.offers_dict())
+        return jsonify(raw_offer.offers_dict())
 
 @app.route("/offers/<int:x>", methods=['GET', 'DELETE', 'PUT'])
 def get_one_offer(x):
@@ -250,9 +250,9 @@ def get_one_offer(x):
         i = Offer.query.get(x)
         i.order_id = data_offer["order_id"]
         i.executor_id = data_offer["executor_id"]
-        i.db.session.add(i)
-        i.db.session.commit()
-        return jsonify(i)
+        db.session.add(i)
+        db.session.commit()
+        return jsonify(i.offers_dict())
 
 if __name__ == "__main__":
-    app.run()
+    app.run(port=5000)
